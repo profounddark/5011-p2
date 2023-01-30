@@ -84,7 +84,7 @@ unsigned int JumpPrime::up() {
         queryCount++;
 
         if (queryCount >= queryLimit) {
-            jumpNumber(upperPrime - DEFAULT_JUMP_VALUE);
+            jumpNumber(upperPrime + DEFAULT_JUMP_VALUE);
 
         }
 
