@@ -15,8 +15,10 @@
  * number will be based on this new number.
  *
  * After a set number of "jumps", the JumpPrime object will deactivate.
- * It can be reactivated resetting the base number to the original encapsulated
- * positive integer.
+ * It can be reactivated in one of two ways: either by reactivating it
+ * in place (which resets the count of queries and jumps but leaves the
+ * encapsulated number at its current value) or by resetting it to the
+ * original instance integer.
  *
  * METHODS:
  * 1. up() and down() are the primary methods of use. They return the next or
