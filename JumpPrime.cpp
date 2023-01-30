@@ -84,7 +84,8 @@ void JumpPrime::jumpNumber(int jumpValue) {
     // test to see if JumpPrime object has reached the jump limit
     if (jumpCount >= jumpLimit) {
         // turn off the object
-        isRunning = false;
+        currentState = Inactive;
+
     }
 }
 
@@ -92,12 +93,12 @@ JumpPrime::JumpPrime(unsigned int initValue, unsigned int jumpBound) {
 
     // less than four digits
     if (initValue < 1000) {
-        isBroken = true;
-        isRunning = false;
+        currentState = Failed;
+
     }
     // otherwise, proceed with initialization
     else {
-        isBroken = false;
+        currentState = Active;
         jumpLimit = jumpBound;
         initialNumber = initValue;
         this->reset();
@@ -113,7 +114,7 @@ JumpPrime::JumpPrime(unsigned int initValue, unsigned int jumpBound) {
  * deactivated, returns 0.
  */
 unsigned int JumpPrime::up() {
-    if (isRunning) {
+    if (currentState == Active) {
         // storing the upper prime in the case that the object jumps
         // after this query
         unsigned int returnValue = upperPrime;
@@ -140,7 +141,7 @@ unsigned int JumpPrime::up() {
  * @return
  */
 unsigned int JumpPrime::down() {
-    if (isRunning) {
+    if (currentState == Active) {
         // storing the upper prime in the case that the object jumps
         // after this query
         unsigned int returnValue = lowerPrime;
@@ -164,12 +165,12 @@ unsigned int JumpPrime::down() {
  * @return true if the reset is successful, false otherwise.
  */
 bool JumpPrime::reset() {
-    if (isBroken) {
+    if (currentState == Failed) {
         return false;
     }
 
     else {
-        isRunning = true;
+        currentState = Active;
         mainNumber = initialNumber;
 
         setPrimeLimits();
@@ -192,20 +193,19 @@ bool JumpPrime::reset() {
  */
 bool JumpPrime::revive() {
     // object is not running and is not permanently broken
-    if (!isRunning && !isBroken) {
+    if (currentState == Inactive) {
         // revive the object
-        isRunning = true;
+        currentState = Active;
         jumpCount = 0;
         queryCount = 0;
     }
     // in any other case
     else {
         // revive permanently disables the object
-        isRunning = false;
-        isBroken = true;
+        currentState = Failed;
     }
 
-    return isRunning;
+    return (currentState == Active);
 }
 
 /**
@@ -214,7 +214,7 @@ bool JumpPrime::revive() {
  * @return true if currently active, false otherwise
  */
 bool JumpPrime::isActive() {
-    return isRunning;
+    return (currentState == Active);
 }
 
 /**
@@ -224,7 +224,7 @@ bool JumpPrime::isActive() {
  * false otherwise.
  */
 bool JumpPrime::isDisabled() {
-    return isBroken;
+    return (currentState == Failed);
 }
 
 /**

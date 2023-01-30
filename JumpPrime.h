@@ -30,6 +30,8 @@
  */
 class JumpPrime {
 
+    enum Status { Active, Inactive, Failed};
+
     // class constants
     static const unsigned int DEFAULT_JUMP_BOUND = 10;
     static const unsigned int DEFAULT_INITIAL_VALUE = 9999;
@@ -38,8 +40,8 @@ class JumpPrime {
     unsigned int initialNumber;
     unsigned int mainNumber;
 
-    bool isRunning;
-    bool isBroken;
+    // for tracking the object's state
+    Status currentState;
 
     int queryCount;
     int queryLimit;
