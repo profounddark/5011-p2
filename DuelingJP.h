@@ -5,8 +5,20 @@
 #ifndef INC_5011_P2_DUELINGJP_H
 #define INC_5011_P2_DUELINGJP_H
 
-#include <vector>
 #include "JumpPrime.h"
+
+
+/*
+ * ASSUMPTIONS:
+ * 1. When counting collisions, a single JumpPrime object returning a specific
+ * value on its own is considered NO COLLISION. Any additional JumpPrime object
+ * that returns the same value is considered an added collision. For example,
+ * if three JumpPrime objects return the same number on an up() call, then
+ * DuelingJP will count TWO (2) COLLISIONS.
+ * 2. When counting inversions, unique instances in which the up() result from
+ * a JumpPrime object equals the down() result of another JumpPrime object
+ * is counted.
+ */
 
 /// DuelingJP is a container for JumpPrime objects used for testing.
 class DuelingJP {
@@ -33,8 +45,7 @@ public:
     /// @param [in] initValues Array of initial values for JumpPrime objects
     /// @param [in] size The size of the array of initial values.
     /// @pre All values of array are valid JumpPrime initial values.
-    DuelingJP(int  initValues[], int size);
-
+    DuelingJP(const int *initValues, int size);
 
     /// DuelingJP Destructor for disposing of JumpPrime garbage
     ~DuelingJP();
@@ -70,6 +81,12 @@ public:
     /// direction. Defaults to true.
     /// @return The number of JumpPrime objects that collided.
     int countCollisions(bool testUp = true);
+
+    /// coutInversions will go through both the up() and down() methods of
+    /// every JumpPrime object in the DuelingJP object and count the number
+    /// of unique times an up() result equals a down() result.
+    /// @return The number of JumpPrime object inversions.
+    int countInversions();
 
 
     /// getSize returns the number of JumpPrime objects in this DuelingJP.

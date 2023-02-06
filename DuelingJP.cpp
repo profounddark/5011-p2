@@ -34,7 +34,7 @@ void DuelingJP::reactivateJumpers() {
 
 
 // assumption: all values in initValues are valid
-DuelingJP::DuelingJP(int  initValues[], int size) {
+DuelingJP::DuelingJP(const int *initValues, int size) {
 
     listSize = size;
     jumperList = new JumpPrime[listSize];
@@ -43,6 +43,7 @@ DuelingJP::DuelingJP(int  initValues[], int size) {
         JumpPrime tempJP(initValues[i]);
         jumperList[i] = tempJP;
     }
+
 
 
 }
@@ -57,6 +58,9 @@ DuelingJP::~DuelingJP() {
 
 DuelingJP::DuelingJP(const DuelingJP &sourceObject) {
 
+    // TODO: DELETE THIS LATER
+    std::cout << "you copy constructed something!" << std::endl;
+
     // copy list size
     listSize = sourceObject.listSize;
 
@@ -69,6 +73,9 @@ DuelingJP::DuelingJP(const DuelingJP &sourceObject) {
 
 DuelingJP::DuelingJP(DuelingJP &&sourceObject) {
 
+    // TODO: DELETE THIS LATER
+    std::cout << "you move constructed something!" << std::endl;
+
     // copy parameters
     listSize = sourceObject.listSize;
     jumperList = sourceObject.jumperList;
@@ -77,13 +84,15 @@ DuelingJP::DuelingJP(DuelingJP &&sourceObject) {
     sourceObject.listSize = 0;
     sourceObject.jumperList = nullptr;
 
-    // TODO: DELETE THIS LATER
-    std::cout << "you moved something!" << std::endl;
+
 
 }
 
 
 DuelingJP &DuelingJP::operator=(const DuelingJP &sourceObject) {
+
+    // TODO: DELETE THIS LATER
+    std::cout << "you copy assigned something!" << std::endl;
 
     // check to verify they're not the same object
     if (this != &sourceObject) {
@@ -105,12 +114,14 @@ DuelingJP &DuelingJP::operator=(const DuelingJP &sourceObject) {
 
 DuelingJP &DuelingJP::operator=(DuelingJP &&sourceObject) {
 
+    // TODO: DELETE THIS LATER
+    std::cout << "you moved assigned something!" << std::endl;
+
     // swap contents
     std::swap(listSize, sourceObject.listSize);
     std::swap(jumperList, sourceObject.jumperList);
 
-    // TODO: DELETE THIS LATER
-    std::cout << "you moved something!" << std::endl;
+
 
     return *this;
 }
@@ -137,6 +148,8 @@ int DuelingJP::countCollisions(bool testUp) {
 
         /// For determining where in the count array to store count
         int countIndex = 0;
+
+        // move through array until either a 0 value or equal value
         while ((collisionCounter[countIndex].value > 0) &&
                (collisionCounter[countIndex].value != outputValue)) {
             countIndex++;
@@ -149,18 +162,52 @@ int DuelingJP::countCollisions(bool testUp) {
 
     // now count how many values had collisions
     int returnCount = 0;
+
     for (int i = 0; i < listSize; i++) {
-        if (collisionCounter[i].count > 1) {
-            returnCount++;
+        if (collisionCounter[i].count > 0) {
+            returnCount = returnCount + collisionCounter[i].count - 1;
         }
     }
     return returnCount;
 }
 
+int DuelingJP::countInversions() {
+
+    // in case any deactivated
+    if (!areActive()) {
+        // reactivate them
+        reactivateJumpers();
+    }
+
+
+    int upCount[listSize];
+    int downCount[listSize];
+
+    for (int i = 0; i < listSize; i++) {
+        upCount[i] = jumperList[i].up();
+        downCount[i] = jumperList[i].down();
+    }
+
+    int inversionCounter = 0;
+
+    for (int upTrack = 0; upTrack < listSize; upTrack++) {
+        for (int downTrack = 0; downTrack < listSize; downTrack++) {
+            if (upCount[upTrack] == downCount[downTrack]) {
+                inversionCounter++;
+            }
+        }
+    }
+
+    return inversionCounter;
+}
+
+
 
 int DuelingJP::getSize() {
     return listSize;
 }
+
+
 
 
 

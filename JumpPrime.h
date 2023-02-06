@@ -5,7 +5,7 @@
 #ifndef INC_5011_P2_JUMPPRIME_H
 #define INC_5011_P2_JUMPPRIME_H
 
-/**
+/*
  * The JumpPrime object encapsulates a positive integer that must be at
  * least 4 digits long. The user can query the object for the two nearest
  * Prime numbers (either higher or lower). After a set number of queries (based
@@ -43,6 +43,10 @@
  * direction, it jumps to the next lower prime minus the default jump value.
  * 3. The default jump value is specified as a class constant (here, 100).
  */
+
+/// The JumpPrime class encapsulates a positive integer and provides the
+/// user information about the closest prime numbers in the positive and
+/// negative direction.
 class JumpPrime {
 
     enum Status {
