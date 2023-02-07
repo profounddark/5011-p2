@@ -50,7 +50,7 @@ DuelingJP::DuelingJP(const int *initValues, int size) {
 
 
 DuelingJP::~DuelingJP() {
-
+    std::cout << "you deconstructed something!" << std::endl;
     delete jumperList;
 
 }

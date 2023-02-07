@@ -79,22 +79,27 @@ void testDJPMethods() {
 
 }
 
-std::unique_ptr<DuelingJP> uniquePointerTest(){
+DuelingJP moveConstructorTest(){
 
     cout << "Instancing unique DuelingJP Object within sub-function." << endl;
-    std::unique_ptr<DuelingJP> newJP(new DuelingJP(TEST_ARRAYS[0], TEST_SIZE));
-    cout << "newJP has size " << newJP->getSize() << endl;
-    cout << "newJP has collision count of " << newJP->countCollisions() << endl;
-    cout << "newJP has inversion count of " << newJP->countInversions() << endl;
-    cout << "Handing off unique pointer newJP to parent function." << endl;
+    DuelingJP newJP(TEST_ARRAYS[0], TEST_SIZE);
+    cout << "newJP has size " << newJP.getSize() << endl;
+    cout << "newJP has collision count of " << newJP.countCollisions() << endl;
+    cout << "newJP has inversion count of " << newJP.countInversions() << endl;
+    cout << "Handing off newJP to parent function." << endl;
     return newJP;
 }
 
 void testUniquePtr() {
     cout << "Testing move methods." << endl;
     cout << "** ** ** ** ** ** ** ** **" << endl;
+
     std::unique_ptr<DuelingJP> testJP;
-    testJP = uniquePointerTest();
+
+    // wrap rvalue DuelingJP in unique ptr, uses move constructor
+    testJP = std::make_unique<DuelingJP>(moveConstructorTest());
+
+    // verify testJP has same content
     cout << "Obtained testJP from child function." << endl;
     cout << "testJP has size " << testJP->getSize() << endl;
     cout << "testJP has collision count of " << testJP->countCollisions() << endl;
@@ -195,8 +200,6 @@ void testMoveSem() {
 
 int main() {
     cout << "The following are tests of the DuelingJP class.";
-
-
 
 
     testDJPMethods();
