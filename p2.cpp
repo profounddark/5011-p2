@@ -79,6 +79,9 @@ void testDJPMethods() {
 
 }
 
+/// moveConstructorTest returns a DuelingJP test for the purposes of
+/// testing the move constructor.
+/// @return a DuelingJP object
 DuelingJP moveConstructorTest(){
 
     cout << "Instancing unique DuelingJP Object within sub-function." << endl;
@@ -90,6 +93,8 @@ DuelingJP moveConstructorTest(){
     return newJP;
 }
 
+/// testUniquePtr tests unique pointers and the move constructor of the
+/// DuelingJP object using the && rvalue reference declarator.
 void testUniquePtr() {
     cout << "Testing move methods." << endl;
     cout << "** ** ** ** ** ** ** ** **" << endl;
@@ -104,6 +109,32 @@ void testUniquePtr() {
     cout << "testJP has size " << testJP->getSize() << endl;
     cout << "testJP has collision count of " << testJP->countCollisions() << endl;
     cout << "testJP has inversion count of " << testJP->countInversions() << endl;
+
+}
+
+void vectorTest() {
+    std::vector<DuelingJP> testVector;
+
+    cout << "Adding new DuelingJP object to test vector." << endl;
+
+
+    testVector.push_back(DuelingJP(TEST_ARRAYS[1], TEST_SIZE));
+
+    cout << "First vector element has size " << testVector[0].getSize() << endl;
+    cout << "First vector element has collision count "
+        << testVector[0].countCollisions() << endl;
+
+    cout << "Adding new DuelingJP object to front of vector." << endl;
+
+    testVector.insert(testVector.begin(),
+                      DuelingJP(TEST_ARRAYS[0], TEST_SIZE));
+
+    cout << "Second element of vector has size " << testVector[1].getSize() << endl;
+    cout << "Second element of vector has collision count "
+        << testVector[1].countCollisions() << endl;
+
+
+
 
 }
 
@@ -204,6 +235,7 @@ int main() {
 
     testDJPMethods();
     testUniquePtr();
+    vectorTest();
     //uniqueMoveTest();
     //testMoveSem();
 
