@@ -1,6 +1,6 @@
-//
-// Created by Andrew Asplund on 1/22/23.
-//
+// Created by Andrew Asplund
+// Date: 02/07/2023
+// Revision: 2.0
 
 #ifndef INC_5011_P2_JUMPPRIME_H
 #define INC_5011_P2_JUMPPRIME_H

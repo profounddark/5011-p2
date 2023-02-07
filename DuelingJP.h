@@ -1,6 +1,6 @@
-//
-// Created by Andrew Asplund on 2/1/23.
-//
+// Created by Andrew Asplund
+// Date: 02/07/2023
+// Revision: 1.0
 
 #ifndef INC_5011_P2_DUELINGJP_H
 #define INC_5011_P2_DUELINGJP_H
@@ -9,6 +9,22 @@
 
 
 /*
+ * The DuelingJP encapsulates a series of JumpPrime objects, specified when
+ * the user instantiates the DuelingJP object. The primary purpose of the
+ * DuelingJP object is to count collisions and inversions. A collision occurs
+ * when two JumpPrime objects return the same result on an up() call or, in the
+ * alternative, a down() call. An inversion occurs when two JumpPrime objects
+ * return the same result on alternate calls (i.e., one up(), the other down()).
+ *
+ * METHODS:
+ * 1. countCollisions is used to count the number of collisions across all of
+ * the JumpPrime objects stored in the DuelingJP object. This can be done
+ * either in the up() direction or the down() direction.
+ * 2. countInversions is used to count the number of inversions across all of
+ * the JumpPrime objects stored in the DuelingJP object.This results in two
+ * activations of each JumpPrime object in the DuelingJP object (once in the
+ * up() direction and once in the down() direction).
+ *
  * ASSUMPTIONS:
  * 1. When counting collisions, a single JumpPrime object returning a specific
  * value on its own is considered NO COLLISION. Any additional JumpPrime object
@@ -18,6 +34,9 @@
  * 2. When counting inversions, unique instances in which the up() result from
  * a JumpPrime object equals the down() result of another JumpPrime object
  * is counted.
+ * 3. Anytime the object attempts to count collisions or inversions and an
+ * associated JumpPrime has deactivated, the associated method reactivates the
+ * object.
  */
 
 /// DuelingJP is a container for JumpPrime objects used for testing.
@@ -32,11 +51,20 @@ class DuelingJP {
     /// areActive verifies that all JumpPrime objects are currently active
     /// (i.e., they have not been deactivated).
     /// @return true if all of the member JumpPrime objects are active.
+    /// @deprecated
     bool areActive();
 
     /// reactivateJumpers goes through all of the JumpPrime objects and
     /// reactivates any that were not active.
+    /// @deprecated
     void reactivateJumpers();
+
+    /// testJumper verifies that a specified JumpPrime object is active and
+    /// ready for testing. If not, it revives the object.
+    /// @param jumperNumber the position in the jumperList to test
+    /// @return true if the JumpPrime object in position jumperNumber is
+    /// active and ready for use
+    bool testJumper(int jumperNumber);
 
 public:
 

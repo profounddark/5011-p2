@@ -1,6 +1,6 @@
-//
-// Created by Andrew Asplund on 2/1/23.
-//
+// Created by Andrew Asplund
+// Date: 02/07/2023
+// Revision: 1.0
 
 #include <iostream>
 #include "DuelingJP.h"
@@ -30,6 +30,14 @@ void DuelingJP::reactivateJumpers() {
             jumperList[i].revive();
         }
     }
+}
+
+bool DuelingJP::testJumper(int jumperNumber) {
+    if (!jumperList[jumperNumber].isActive()) {
+        return jumperList[jumperNumber].revive();
+    }
+
+    return true;
 }
 
 
@@ -133,15 +141,10 @@ int DuelingJP::countCollisions(bool testUp) {
         int count = 0;
     } collisionCounter[listSize];
 
-    // in case any deactivated
-    if (!areActive()) {
-        // reactivate them
-        reactivateJumpers();
-    }
-
 
     for (int i = 0; i < listSize; i++) {
         unsigned int outputValue;
+        testJumper(i);
         outputValue = testUp ?
                 jumperList[i].up() :
                 jumperList[i].down();
@@ -173,18 +176,17 @@ int DuelingJP::countCollisions(bool testUp) {
 
 int DuelingJP::countInversions() {
 
-    // in case any deactivated
-    if (!areActive()) {
-        // reactivate them
-        reactivateJumpers();
-    }
-
 
     int upCount[listSize];
     int downCount[listSize];
 
     for (int i = 0; i < listSize; i++) {
+        // In case the JumpPrime was inactive
+        testJumper(i);
         upCount[i] = jumperList[i].up();
+
+        // In case the up jump deactivated it
+        testJumper(i);
         downCount[i] = jumperList[i].down();
     }
 
@@ -206,6 +208,8 @@ int DuelingJP::countInversions() {
 int DuelingJP::getSize() {
     return listSize;
 }
+
+
 
 
 

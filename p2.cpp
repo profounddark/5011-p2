@@ -1,3 +1,7 @@
+// Created by Andrew Asplund
+// Date: 02/07/2023
+// Revision: 1.0
+
 #include <iostream>
 #include <memory>
 #include <vector>
@@ -52,6 +56,8 @@ void inversionTest(DuelingJP testJP, const int assertedResult) {
         << " inversions." << endl;
 }
 
+/// testDJPMethods runs a series of tests on sample DuelingJP objects.
+/// Tests include testing the collision counter and the inversion counter.
 void testDJPMethods() {
     cout << "DuelingJP Method Tests" << endl;
 
@@ -113,21 +119,27 @@ void testUniquePtr() {
 }
 
 void vectorTest() {
+
+    cout << "Testing move constructor." << endl;
+    cout << "** ** ** ** ** ** ** ** **" << endl;
+
     std::vector<DuelingJP> testVector;
 
     cout << "Adding new DuelingJP object to test vector." << endl;
 
-
+    // this invokes a move constructor because of the rvalue DuelingJP created
     testVector.push_back(DuelingJP(TEST_ARRAYS[1], TEST_SIZE));
 
     cout << "First vector element has size " << testVector[0].getSize() << endl;
     cout << "First vector element has collision count "
         << testVector[0].countCollisions() << endl;
 
-    cout << "Adding new DuelingJP object to front of vector." << endl;
+    cout << "Creating new DuelingJP object insertDJP" << endl;
+    DuelingJP insertDJP(TEST_ARRAYS[0], TEST_SIZE);
 
-    testVector.insert(testVector.begin(),
-                      DuelingJP(TEST_ARRAYS[0], TEST_SIZE));
+    cout << "Adding insertDJP object to front of vector." << endl;
+    // this invokes a move constructor because of the rvalue DuelingJP created
+    testVector.insert(testVector.begin(), move(insertDJP));
 
     cout << "Second element of vector has size " << testVector[1].getSize() << endl;
     cout << "Second element of vector has collision count "
@@ -135,10 +147,10 @@ void vectorTest() {
 
 
 
-
 }
 
-void uniqueMoveTest() {
+
+void vectorUniqueTest() {
 
     std::vector<std::unique_ptr<DuelingJP>> testVector;
 
@@ -188,45 +200,6 @@ void uniqueMoveTest() {
 
 }
 
-void testMoveSem() {
-
-    cout << "** ** ** ** ** ** ** ** **" << endl;
-    cout << "Testing will now be done on the move methods of the DuelingJP"
-         << " class." << endl;
-
-    cout << "Instancing a new DJP object." << endl;
-
-    std::unique_ptr<DuelingJP> firstDJP(new DuelingJP(TEST_ARRAY_1, TEST_SIZE));
-    cout << "The first pointer now points to ";
-    if (firstDJP == nullptr) {
-        cout << "a null pointer." << endl;
-    } else {
-        cout << firstDJP << "." << endl;
-    }
-
-
-    cout << "Moving the DJP object to a new unique pointer." << endl;
-
-    std::unique_ptr<DuelingJP> secondDJP = move(firstDJP);
-
-    cout << "The first pointer now points to ";
-    if (firstDJP == nullptr) {
-        cout << "a null pointer." << endl;
-    } else {
-        cout << firstDJP << "." << endl;
-    }
-    cout << "The second pointer now points to ";
-    if (secondDJP == nullptr) {
-        cout << "a null pointer." << endl;
-    } else {
-        cout << secondDJP << "." << endl;
-    }
-
-
-
-
-}
-
 
 
 int main() {
@@ -236,7 +209,7 @@ int main() {
     testDJPMethods();
     testUniquePtr();
     vectorTest();
-    //uniqueMoveTest();
+    vectorUniqueTest();
     //testMoveSem();
 
     return 0;
