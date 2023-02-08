@@ -64,7 +64,7 @@ DuelingJP::~DuelingJP() {
 }
 
 
-DuelingJP::DuelingJP(const DuelingJP &sourceObject) {
+DuelingJP::DuelingJP(DuelingJP &sourceObject) {
 
     // TODO: DELETE THIS LATER
     std::cout << "you copy constructed something!" << std::endl;

@@ -13,12 +13,6 @@ using std::cin;
 using std::endl;
 using std::move;
 
-
-
-
-const int TEST_ARRAY_1[] = {2488, 2489, 2490, 2505, 2509};
-const int COLLISION_RESULT_1 = 3;
-
 const int TEST_SIZE = 5;
 const int TEST_COUNT = 3;
 const int TEST_ARRAYS[TEST_COUNT][TEST_SIZE] =
@@ -37,6 +31,7 @@ void printInputData(const int testArray[], int size) {
     cout << endl;
 }
 
+// collisionTest tests the collision counting capacity of a DuelingJP object
 void collisionTest(DuelingJP testJP, const int assertedResult) {
 
     cout << "Test Object has size of " << testJP.getSize() << endl;
@@ -49,6 +44,7 @@ void collisionTest(DuelingJP testJP, const int assertedResult) {
 
 }
 
+// inversionTest tests the inversion counting capacity of a DuelingJP object.
 void inversionTest(DuelingJP testJP, const int assertedResult) {
     cout << "Test Object has size of " << testJP.getSize() << endl;
     cout << "Asserted test results: " << assertedResult << endl;
@@ -59,6 +55,9 @@ void inversionTest(DuelingJP testJP, const int assertedResult) {
 /// testDJPMethods runs a series of tests on sample DuelingJP objects.
 /// Tests include testing the collision counter and the inversion counter.
 void testDJPMethods() {
+
+    cout << endl << endl;
+
     cout << "DuelingJP Method Tests" << endl;
 
     // creating new objects for collision tests
@@ -102,6 +101,7 @@ DuelingJP moveConstructorTest(){
 /// testUniquePtr tests unique pointers and the move constructor of the
 /// DuelingJP object using the && rvalue reference declarator.
 void testUniquePtr() {
+    cout << endl << endl;
     cout << "Testing move methods." << endl;
     cout << "** ** ** ** ** ** ** ** **" << endl;
 
@@ -112,105 +112,104 @@ void testUniquePtr() {
 
     // verify testJP has same content
     cout << "Obtained testJP from child function." << endl;
+    cout << "testJP points to " << testJP << endl;
     cout << "testJP has size " << testJP->getSize() << endl;
     cout << "testJP has collision count of " << testJP->countCollisions() << endl;
     cout << "testJP has inversion count of " << testJP->countInversions() << endl;
 
+    cout << "Moving testJP to new unique ptr." << endl;
+    std::unique_ptr<DuelingJP> newJP;
+
+    // this actually just moves the pointer, not the object.
+    newJP = std::move(testJP);
+    if (testJP == nullptr) {
+        cout << "testJP now pointing to null pointer." << endl;
+    } else {
+        cout << "testJP now pointing to " << testJP << "." << endl;
+    }
+    cout << "newJP points to " << newJP << endl;
+    cout << "newJP has size " << newJP->getSize() << endl;
+    cout << "newJP has collision count of " << newJP->countCollisions() << endl;
+    cout << "newJP has inversion count of " << newJP->countInversions() << endl;
+
 }
 
-void vectorTest() {
-
-    cout << "Testing move constructor." << endl;
+// sharedTest tests using shared pointers. A new DuelingJP object is created
+// using a shared pointer. Then, two additional shared pointers are created
+// pointing to the same object. The two shared pointers are de-scoped and
+// the first shared pointer is re-examined.
+void sharedTest() {
+    cout << endl << endl;
+    cout << "Creating new DuelingJP object with shared pointers." << endl;
     cout << "** ** ** ** ** ** ** ** **" << endl;
 
-    std::vector<DuelingJP> testVector;
+    std::shared_ptr<DuelingJP> djp1 =
+            std::make_shared<DuelingJP>(DuelingJP(TEST_ARRAYS[0], TEST_SIZE));
 
-    cout << "Adding new DuelingJP object to test vector." << endl;
+    cout << "djp1 has size " << djp1->getSize() << " and "
+         << djp1->countCollisions() << " collisions." << endl;
 
-    // this invokes a move constructor because of the rvalue DuelingJP created
-    testVector.push_back(DuelingJP(TEST_ARRAYS[1], TEST_SIZE));
+    cout << "djp1 reports " << djp1.use_count() << " shared pointers." << endl;
+    {
+        cout << "Creating new shared pointers djp2 and djp3." << endl;
 
-    cout << "First vector element has size " << testVector[0].getSize() << endl;
-    cout << "First vector element has collision count "
-        << testVector[0].countCollisions() << endl;
+        std::shared_ptr<DuelingJP> djp2 = djp1;
+        std::shared_ptr<DuelingJP> djp3 = djp1;
 
-    cout << "Creating new DuelingJP object insertDJP" << endl;
-    DuelingJP insertDJP(TEST_ARRAYS[0], TEST_SIZE);
+        cout << "djp2 has size " << djp2->getSize() << " and "
+             << djp2->countCollisions() << " collisions." << endl;
+        cout << "djp3 has size " << djp3->getSize() << " and "
+             << djp3->countCollisions() << " collisions." << endl;
 
-    cout << "Adding insertDJP object to front of vector." << endl;
-    // this invokes a move constructor because of the rvalue DuelingJP created
-    testVector.insert(testVector.begin(), move(insertDJP));
+        cout << "djp1 reports " << djp1.use_count() << " shared pointers." << endl;
+        cout << "De-scoping djp2 and djp3." << endl;
 
-    cout << "Second element of vector has size " << testVector[1].getSize() << endl;
-    cout << "Second element of vector has collision count "
-        << testVector[1].countCollisions() << endl;
+    }
 
-
+    cout << "djp1 has size " << djp1->getSize() << " and "
+         << djp1->countCollisions() << " collisions." << endl;
+    cout << "djp1 reports " << djp1.use_count() << " shared pointers." << endl;
 
 }
 
 
-void vectorUniqueTest() {
+void moveVectorTest() {
 
-    std::vector<std::unique_ptr<DuelingJP>> testVector;
+    cout << endl << endl;
 
+    cout << "Testing DuelingJP objects in a STL Vector" << endl;
     cout << "** ** ** ** ** ** ** ** **" << endl;
-    cout << "Testing will now be done on the move methods of the DuelingJP"
-        << " class." << endl;
 
-    std::unique_ptr<DuelingJP> newJP(new DuelingJP(TEST_ARRAY_1, TEST_SIZE));
+    std::vector<DuelingJP> coolVector;
 
-    cout << "newJP has size of " << newJP->getSize() << endl;
-    cout << "newJP has collision count of " << newJP->countCollisions() << endl;
+    coolVector.emplace_back(TEST_ARRAYS[0], TEST_SIZE);
 
-    cout << "Vector now has " << testVector.size() << " elements." << endl;
-    cout << "moving newJP into vector." << endl;
-    testVector.push_back(move(newJP));
-    cout << "Test vector has " << testVector.size() << " elements." << endl;
-    cout << "Last element has size of " << testVector.back()->getSize() << endl;
-    cout << "Last element has collision count of " <<
-        testVector.back()->countCollisions() << endl;
+    coolVector.emplace_back(TEST_ARRAYS[1], TEST_SIZE);
 
-    if (newJP == nullptr) {
-        cout << "newJP now pointing to null pointer." << endl;
-    } else {
-        cout << "newJP now pointing to " << newJP << "." << endl;
-    }
+    coolVector.emplace_back(TEST_ARRAYS[2], TEST_SIZE);
 
-    cout << endl;
-
-    cout << "Moving element back into newJP." << endl;
-
-    newJP = move(testVector.back());
-
-    cout << "newJP has size of " << newJP->getSize() << endl;
-    cout << "newJP has collision count of " << newJP->countCollisions() << endl;
-
-    cout << "Test vector has " << testVector.size() << " elements." << endl;
-    if (testVector.back() == nullptr) {
-        cout << "Last element of test vector is pointing to null pointer." << endl;
-    } else {
-        cout << "Last element of test vector is pointing to "
-            << testVector.back() << "." << endl;
-    }
+    cout << "STL Vector now has size " << coolVector.size() << endl;
 
 
-    cout << endl;
 
 
 }
-
-
 
 int main() {
+
     cout << "The following are tests of the DuelingJP class.";
 
-
+    // test the actual methods of the DuelingjP object
     testDJPMethods();
+
+    // test creating a unique pointer w/ move constructor
     testUniquePtr();
-    vectorTest();
-    vectorUniqueTest();
-    //testMoveSem();
+
+    // test shared pointer
+    sharedTest();
+
+    // vector test
+    moveVectorTest();
 
     return 0;
 

@@ -81,7 +81,7 @@ public:
     /// DuelingJP Copy Constructor creates a duplicate DuelingJP object with
     /// the same JumpPrime objects.
     /// @param [in] sourceObject The DuelingJP object to copy.
-    DuelingJP(const DuelingJP & sourceObject);
+    DuelingJP(DuelingJP &sourceObject);
 
 
     /// DuelingJP Move Constructor assigns a new DuelingJP with the content
