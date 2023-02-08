@@ -110,6 +110,7 @@ void testUniquePtr() {
     // wrap rvalue DuelingJP in unique ptr, uses move constructor
     testJP = std::make_unique<DuelingJP>(moveConstructorTest());
 
+
     // verify testJP has same content
     cout << "Obtained testJP from child function." << endl;
     cout << "testJP points to " << testJP << endl;
@@ -172,7 +173,10 @@ void sharedTest() {
 
 }
 
-
+/// moveVectorTest creates a vector of three DuelingJP objects and deletes
+/// the first element in order to test the move assignment operator of the
+/// DuelingJP object. This is due to the fact that the STL Vector uses
+/// move assignment operators when moving elements internally.
 void moveVectorTest() {
 
     cout << endl << endl;
@@ -182,16 +186,29 @@ void moveVectorTest() {
 
     std::vector<DuelingJP> coolVector;
 
+    // add three duelingJPs to the vector
     coolVector.emplace_back(TEST_ARRAYS[0], TEST_SIZE);
-
     coolVector.emplace_back(TEST_ARRAYS[1], TEST_SIZE);
-
     coolVector.emplace_back(TEST_ARRAYS[2], TEST_SIZE);
 
     cout << "STL Vector now has size " << coolVector.size() << endl;
+    for (int i = 0; i < coolVector.size(); i++) {
+        cout << "Element " << i << " has size " << coolVector[i].getSize()
+            << " and " << coolVector[i].countCollisions() << " collisions " << endl;
+    }
 
+    cout << "Deleting the first element of the STL Vector to test " << endl;
+    cout << "the DuelingJP move assignment operator." << endl;
 
+    // vectors move stuff using move assignment operators, so this
+    // will test the move assignment operator.
+    coolVector.erase(coolVector.begin());
 
+    cout << "STL Vector now has size " << coolVector.size() << endl;
+    for (int i = 0; i < coolVector.size(); i++) {
+        cout << "Element " << i << " has size " << coolVector[i].getSize()
+             << " and " << coolVector[i].countCollisions() << " collisions " << endl;
+    }
 
 }
 
