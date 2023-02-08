@@ -2,7 +2,7 @@
 // Date: 02/07/2023
 // Revision: 1.0
 
-#include <iostream>
+#include <algorithm>
 #include "DuelingJP.h"
 
 
@@ -58,16 +58,12 @@ DuelingJP::DuelingJP(const int *initValues, int size) {
 
 
 DuelingJP::~DuelingJP() {
-    std::cout << "you deconstructed something!" << std::endl;
     delete jumperList;
 
 }
 
 
 DuelingJP::DuelingJP(DuelingJP &sourceObject) {
-
-    // TODO: DELETE THIS LATER
-    std::cout << "you copy constructed something!" << std::endl;
 
     // copy list size
     listSize = sourceObject.listSize;
@@ -80,9 +76,6 @@ DuelingJP::DuelingJP(DuelingJP &sourceObject) {
 }
 
 DuelingJP::DuelingJP(DuelingJP &&sourceObject) {
-
-    // TODO: DELETE THIS LATER
-    std::cout << "you move constructed something!" << std::endl;
 
     // copy parameters
     listSize = sourceObject.listSize;
@@ -99,9 +92,6 @@ DuelingJP::DuelingJP(DuelingJP &&sourceObject) {
 
 DuelingJP &DuelingJP::operator=(const DuelingJP &sourceObject) {
 
-    // TODO: DELETE THIS LATER
-    std::cout << "you copy assigned something!" << std::endl;
-
     // check to verify they're not the same object
     if (this != &sourceObject) {
 
@@ -109,6 +99,8 @@ DuelingJP &DuelingJP::operator=(const DuelingJP &sourceObject) {
         delete this->jumperList;
 
         listSize = sourceObject.listSize;
+
+        jumperList = new JumpPrime[listSize];
         for (int i = 0; i < listSize; i++) {
             jumperList[i] = sourceObject.jumperList[i];
         }
@@ -121,9 +113,6 @@ DuelingJP &DuelingJP::operator=(const DuelingJP &sourceObject) {
 }
 
 DuelingJP &DuelingJP::operator=(DuelingJP &&sourceObject) {
-
-    // TODO: DELETE THIS LATER
-    std::cout << "you moved assigned something!" << std::endl;
 
     // swap contents
     std::swap(listSize, sourceObject.listSize);
@@ -139,7 +128,9 @@ int DuelingJP::countCollisions(bool testUp) {
     struct CollisionCounter {
         unsigned int value = 0;
         int count = 0;
-    } collisionCounter[listSize];
+    };
+
+    CollisionCounter *collisionCounter = new CollisionCounter[listSize];
 
 
     for (int i = 0; i < listSize; i++) {
@@ -171,14 +162,17 @@ int DuelingJP::countCollisions(bool testUp) {
             returnCount = returnCount + collisionCounter[i].count - 1;
         }
     }
+
+    delete[] collisionCounter;
+
     return returnCount;
 }
 
 int DuelingJP::countInversions() {
 
 
-    int upCount[listSize];
-    int downCount[listSize];
+    unsigned int *upCount = new unsigned int[listSize];
+    unsigned int *downCount = new unsigned int[listSize];
 
     for (int i = 0; i < listSize; i++) {
         // In case the JumpPrime was inactive
@@ -200,12 +194,15 @@ int DuelingJP::countInversions() {
         }
     }
 
+    delete[] upCount;
+    delete[] downCount;
+
     return inversionCounter;
 }
 
 
 
-int DuelingJP::getSize() {
+int DuelingJP::getSize() const {
     return listSize;
 }
 

@@ -119,7 +119,7 @@ public:
 
     /// getSize returns the number of JumpPrime objects in this DuelingJP.
     /// @return The number of JumpPrime objects in the DuelingJP object.
-    int getSize();
+    int getSize() const;
 
 
 

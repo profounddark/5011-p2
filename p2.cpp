@@ -113,7 +113,7 @@ void testUniquePtr() {
 
     // verify testJP has same content
     cout << "Obtained testJP from child function." << endl;
-    cout << "testJP points to " << testJP << endl;
+    cout << "testJP points to " << &testJP << endl;
     cout << "testJP has size " << testJP->getSize() << endl;
     cout << "testJP has collision count of " << testJP->countCollisions() << endl;
     cout << "testJP has inversion count of " << testJP->countInversions() << endl;
@@ -126,9 +126,9 @@ void testUniquePtr() {
     if (testJP == nullptr) {
         cout << "testJP now pointing to null pointer." << endl;
     } else {
-        cout << "testJP now pointing to " << testJP << "." << endl;
+        cout << "testJP now pointing to " << &testJP << "." << endl;
     }
-    cout << "newJP points to " << newJP << endl;
+    cout << "newJP points to " << &newJP << endl;
     cout << "newJP has size " << newJP->getSize() << endl;
     cout << "newJP has collision count of " << newJP->countCollisions() << endl;
     cout << "newJP has inversion count of " << newJP->countInversions() << endl;
@@ -186,13 +186,14 @@ void moveVectorTest() {
 
     std::vector<DuelingJP> coolVector;
 
-    // add three duelingJPs to the vector
+    // add three duelingJPs to the vector. This actually uses the internal
+    // move constructor in the process of making new DuelingJP objects.
     coolVector.emplace_back(TEST_ARRAYS[0], TEST_SIZE);
     coolVector.emplace_back(TEST_ARRAYS[1], TEST_SIZE);
     coolVector.emplace_back(TEST_ARRAYS[2], TEST_SIZE);
 
     cout << "STL Vector now has size " << coolVector.size() << endl;
-    for (int i = 0; i < coolVector.size(); i++) {
+    for (int i = 0; i < (int)coolVector.size(); i++) {
         cout << "Element " << i << " has size " << coolVector[i].getSize()
             << " and " << coolVector[i].countCollisions() << " collisions " << endl;
     }
@@ -205,7 +206,7 @@ void moveVectorTest() {
     coolVector.erase(coolVector.begin());
 
     cout << "STL Vector now has size " << coolVector.size() << endl;
-    for (int i = 0; i < coolVector.size(); i++) {
+    for (int i = 0; i < (int)coolVector.size(); i++) {
         cout << "Element " << i << " has size " << coolVector[i].getSize()
              << " and " << coolVector[i].countCollisions() << " collisions " << endl;
     }
