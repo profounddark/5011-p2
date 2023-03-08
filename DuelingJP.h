@@ -17,10 +17,14 @@
  * return the same result on alternate calls (i.e., one up(), the other down()).
  *
  * METHODS:
- * 1. countCollisions is used to count the number of collisions across all of
+ * 1. The constructor accepts an array of integers representing the number
+ * to be encapsulated by each JumpPrime object and an integer representing
+ * the number of items in the array. Once a DuelingJP object is instanced,
+ * the size and value of the JumpPrime objects cannot be changed by the user.
+ * 2. countCollisions is used to count the number of collisions across all of
  * the JumpPrime objects stored in the DuelingJP object. This can be done
  * either in the up() direction or the down() direction.
- * 2. countInversions is used to count the number of inversions across all of
+ * 3. countInversions is used to count the number of inversions across all of
  * the JumpPrime objects stored in the DuelingJP object.This results in two
  * activations of each JumpPrime object in the DuelingJP object (once in the
  * up() direction and once in the down() direction).
@@ -37,6 +41,9 @@
  * 3. Anytime the object attempts to count collisions or inversions and an
  * associated JumpPrime has deactivated, the associated method reactivates the
  * object.
+ * 4. During the counting of inversions, it is possible for a JumpPrime
+ * to jump in between the up(0 and down() call. This is understood and
+ * no exceptions are made for it.
  */
 
 /// DuelingJP is a container for JumpPrime objects used for testing.

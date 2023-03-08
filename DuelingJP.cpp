@@ -51,9 +51,6 @@ DuelingJP::DuelingJP(const int *initValues, int size) {
         JumpPrime tempJP(initValues[i]);
         jumperList[i] = tempJP;
     }
-
-
-
 }
 
 
